@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6491881976531726731}
   m_Layer: 0
-  m_Name: Normal_Wall_V1
+  m_Name: Normal_Wall_Top_V1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -101,7 +101,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 4
   m_Sprite: {fileID: -5116731193234211950, guid: 68ff880ee26626446a8b5976dd44f340,
     type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -183,7 +183,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 4
   m_Sprite: {fileID: 3595666086137592876, guid: 68ff880ee26626446a8b5976dd44f340,
     type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

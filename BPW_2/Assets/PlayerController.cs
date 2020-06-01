@@ -29,10 +29,8 @@ public class PlayerController : MonoBehaviour {
 
         rbPlayer.velocity = new Vector2(hor * playerSpeed, ver * playerSpeed);
 
-        animPlayer.SetFloat("horizontalSpeed", rbPlayer.velocity.x);
-        animPlayer.SetFloat("verticalSpeed", rbPlayer.velocity.y);
-
-        Debug.Log(rbPlayer.velocity);
+        animPlayer.SetFloat("horizontalSpeed", hor);
+        animPlayer.SetFloat("verticalSpeed", ver);
     }
 
 }
