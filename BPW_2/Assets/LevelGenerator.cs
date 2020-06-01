@@ -17,7 +17,7 @@ public class LevelGenerator : MonoBehaviour
     public List<GameObject> floorTiles = new List<GameObject>();
 
     public int amountOfRoomsGenerated = 0;
-    private float tileSize = 1.2f;
+    private float tileSize = 1.28f;
     private int roomLength = 13;
     private int wallLength = 4;
 
@@ -30,8 +30,8 @@ public class LevelGenerator : MonoBehaviour
     private List<float> roomPositionsX = new List<float>();
     private List<float> roomPositionsY = new List<float>();
 
-    private float roomLenth = 18.08f;
-    private float roomHeight = 15.68f;
+    private float roomLenth = 19.2f;
+    private float roomHeight = 16.64f;
 
     public GameObject levelParentObject;
 
@@ -73,7 +73,7 @@ public class LevelGenerator : MonoBehaviour
         }
 
         GenerateDungeonFloor(3);
-        GenerateRooms(100);
+        GenerateRooms(36);
     }
 
     private void GenerateRooms(int amount)
@@ -81,23 +81,25 @@ public class LevelGenerator : MonoBehaviour
         int currentRow = 0;
         int currentRoom = 0;
 
+        int bossRoomDoorwayPos = Random.Range(1, 9);
+
         for (int i = 0; i < amount; i++)
         {
-            if (i == 44)
+            if (i == 14)
             {
-                CreateBossRoom(1);
+                CreateBossRoom(1, bossRoomDoorwayPos);
             }
-            else if (i == 45)
+            else if (i == 15)
             {
-                CreateBossRoom(2);
+                CreateBossRoom(2, bossRoomDoorwayPos);
             }
-            else if (i == 54)
+            else if (i == 20)
             {
-                CreateBossRoom(3);
+                CreateBossRoom(3, bossRoomDoorwayPos);
             }
-            else if (i == 55)
+            else if (i == 21)
             {
-                CreateBossRoom(4);
+                CreateBossRoom(4, bossRoomDoorwayPos);
             }
             else
             {
@@ -109,7 +111,7 @@ public class LevelGenerator : MonoBehaviour
             generatedRooms[i].transform.position = roomPosition;
 
             currentRoom++;
-            if (currentRoom == 10)
+            if (currentRoom == 6)
             {
                 currentRoom = 0;
                 currentRow++;
@@ -189,21 +191,43 @@ public class LevelGenerator : MonoBehaviour
         }
 
         //Add doorway
-        if (doorwayPlacement == 1 && wallPlacement == "Top")
+        if (!bossRoom)
         {
-            returnList.Add(doorwayPrefabs[2]);
-        }
-        else if (doorwayPlacement == 3 && wallPlacement == "Bottom")
-        {
-            returnList.Add(doorwayPrefabs[0]);
-        }
-        else //add replacement walls
-        {
-            for (int i = 0; i < 3; i++)
+            if (doorwayPlacement == 1 && wallPlacement == "Top")
             {
-                returnList.Add(wallPrefabToAdd[Random.Range(0, wallPrefabToAdd.Count - 1)]);
+                returnList.Add(doorwayPrefabs[2]);
+            }
+            else if (doorwayPlacement == 3 && wallPlacement == "Bottom")
+            {
+                returnList.Add(doorwayPrefabs[0]);
+            }
+            else //add replacement walls
+            {
+                for (int i = 0; i < 3; i++)
+                {
+                    returnList.Add(wallPrefabToAdd[Random.Range(0, wallPrefabToAdd.Count - 1)]);
+                }
             }
         }
+        else
+        {
+            if (doorwayPlacement == 1 && wallPlacement == "Top" && bossPart == 1 || doorwayPlacement == 2 && wallPlacement == "Top" && bossPart == 2)
+            {
+                returnList.Add(doorwayPrefabs[2]);
+            }
+            else if (doorwayPlacement == 5 && wallPlacement == "Bottom" && bossPart == 3 || doorwayPlacement == 6 && wallPlacement == "Bottom" && bossPart == 4)
+            {
+                returnList.Add(doorwayPrefabs[0]);
+            }
+            else //add replacement walls
+            {
+                for (int i = 0; i < 3; i++)
+                {
+                    returnList.Add(wallPrefabToAdd[Random.Range(0, wallPrefabToAdd.Count - 1)]);
+                }
+            }
+        }
+        
 
         //add second bit of walls
         for (int i = 0; i < wallLength; i++)
@@ -228,6 +252,75 @@ public class LevelGenerator : MonoBehaviour
             returnList.Add(wallPrefabToAdd[Random.Range(0, wallPrefabToAdd.Count - 1)]);
         }
 
+        return returnList;
+    }
+
+    private List<GameObject> createSideWallBossRow(bool spawnDoor, int doorwayPlacement, bool spawnedDoor, int bossPart)
+    {
+        List<GameObject> returnList = new List<GameObject>();
+
+        if (!spawnDoor)
+        {
+            if (!spawnedDoor)
+            {
+                if (bossPart == 1 || bossPart == 3)
+                {
+                    returnList.Add(leftWallPrefabs[Random.Range(0, leftWallPrefabs.Count - 1)]);
+                }
+                else if (bossPart == 2 || bossPart == 4)
+                {
+                    returnList.Add(rightWallPrefabs[Random.Range(0, rightWallPrefabs.Count - 1)]);
+                }           
+            }
+            else if (spawnedDoor && doorwayPlacement == 4)
+            {
+                if (bossPart == 2 || bossPart == 4)
+                {
+                    returnList.Add(rightWallPrefabs[Random.Range(0, rightWallPrefabs.Count - 1)]);
+                }
+            }
+            else if (spawnedDoor && doorwayPlacement == 2)
+            {
+                if(bossPart == 1 || bossPart == 3)
+                {
+                    returnList.Add(leftWallPrefabs[Random.Range(0, leftWallPrefabs.Count - 1)]);
+                }
+            }
+        }
+        else
+        {
+            if (doorwayPlacement == 7 && bossPart == 3)
+            {
+                    returnList.Add(doorwayPrefabs[1]);
+            }
+            else if(doorwayPlacement == 8 && bossPart == 1)
+            {
+                    returnList.Add(doorwayPrefabs[1]);
+            }
+            else
+            {
+                if (bossPart == 1 || bossPart == 3)
+                {
+                    returnList.Add(leftWallPrefabs[Random.Range(0, leftWallPrefabs.Count - 1)]);
+                }
+            }
+
+            if (doorwayPlacement == 3 && bossPart == 2)
+            {
+                 returnList.Add(doorwayPrefabs[3]);
+            }
+            else if (doorwayPlacement == 4 && bossPart == 4)
+            {
+                returnList.Add(doorwayPrefabs[3]);
+            }
+            else
+            {
+                if (bossPart == 2 || bossPart == 4)
+                {
+                    returnList.Add(rightWallPrefabs[Random.Range(0, rightWallPrefabs.Count - 1)]);
+                }
+            }
+        }
         return returnList;
     }
 
@@ -275,54 +368,72 @@ public class LevelGenerator : MonoBehaviour
         return returnList;
     }
 
-    public void CreateBossRoom(int part) 
+    public void CreateBossRoom(int part, int doorwaySide) 
     {
         Room generatedRoom = new Room();
         generatedRoom.roomID = amountOfRoomsGenerated;
 
-        int doorwaySide = Random.Range(1, 5);
+        Debug.Log(doorwaySide);
 
         List<List<GameObject>> roomTiles = new List<List<GameObject>>();
+        bool spawnedDoor = false;
 
         #region top Wall spawning
-        roomTiles.Add(createHorizontalWall("Top", topWallPrefabs, doorwaySide, true, part));
+        if (part == 1 || part == 2)
+        {
+            roomTiles.Add(createHorizontalWall("Top", topWallPrefabs, doorwaySide, true, part));
+        }
+        else
+        {
+            roomTiles.Add(createSideWallBossRow(false, doorwaySide, false, part)); //first row cant have a door
+        }
         #endregion
 
         int tileNumber = 0;
 
+        //add more rows before the door
         for (int i = 0; i < 3; i++)
         {
-            roomTiles.Add(createSideWallsRow(false, doorwaySide, false));
+            roomTiles.Add(createSideWallBossRow(false, doorwaySide, false, part));
         }
 
-        bool spawnedDoor = false;
-
+        //add a door or fill the walls up
         for (int i = 0; i < 3; i++)
         {
-            if (doorwaySide == 4 || doorwaySide == 2)
+            if (doorwaySide == 3 && part == 2 || doorwaySide == 4 && part == 4|| doorwaySide == 7 && part == 3|| doorwaySide == 8 && part == 1)
             {
                 if (!spawnedDoor)
                 {
-                    roomTiles.Add(createSideWallsRow(true, doorwaySide, false));
+                    roomTiles.Add(createSideWallBossRow(true, doorwaySide, false, part));
                     spawnedDoor = true;
                 }
                 else
                 {
-                    roomTiles.Add(createSideWallsRow(false, doorwaySide, true));
+                    roomTiles.Add(createSideWallBossRow(false, doorwaySide, true, part));
                 }
             }
             else
             {
-                roomTiles.Add(createSideWallsRow(false, doorwaySide, false));
+                roomTiles.Add(createSideWallBossRow(false, doorwaySide, false, part));
             }
         }
 
         for (int i = 0; i < 3; i++)
         {
-            roomTiles.Add(createSideWallsRow(false, doorwaySide, false));
+            roomTiles.Add(createSideWallBossRow(false, doorwaySide, false, part));
         }
 
-        roomTiles.Add(createHorizontalWall("Bottom", bottomWallPrefabs, doorwaySide, true, part));
+        if (part == 3 || part == 4)
+        {
+            roomTiles.Add(createHorizontalWall("Bottom", bottomWallPrefabs, doorwaySide, true, part));
+        }
+        else
+        {
+            roomTiles.Add(createSideWallBossRow(false, doorwaySide, false, part));
+            roomTiles.Add(createSideWallBossRow(false, doorwaySide, false, part));
+            roomTiles.Add(createSideWallBossRow(false, doorwaySide, false, part));
+        }
+        
 
         int rowNumber = 0;
 
@@ -332,10 +443,21 @@ public class LevelGenerator : MonoBehaviour
 
             for (int i = 0; i < 14; i++)
             {
-                for (int t = 0; t < 14; t++)
+                for (int t = 0; t < 15; t++)
                 {
+                    int tileRandomNumber = Random.Range(0, 5);
+                    int tileVariant = 0;
+                    if (tileRandomNumber == 0)
+                    {
+                        tileVariant = 3;
+                    }
+                    else
+                    {
+                        tileVariant = 2;
+                    }
+
                     Vector3 tilePos = new Vector3(tilePositionsX[t], tilePositionsY[i], 0);
-                    var roomTile = Instantiate(floorTiles[3], tilePos, Quaternion.identity);
+                    var roomTile = Instantiate(floorTiles[tileVariant], tilePos, Quaternion.identity);
                     roomTile.transform.parent = Room_gameobject.transform;
                 }
             }
@@ -348,16 +470,21 @@ public class LevelGenerator : MonoBehaviour
             }
             else
             {
-                tileNumber = 1;
+                tileNumber = 0;
             }
 
             foreach (GameObject tile in tileList)
             {
-                if (tileNumber == 1 && doorwaySide == 4)
+
+                if(tileList.Count == 1)
                 {
-                    if (rowNumber == 5 || rowNumber == 6)
+                    if(part == 2 || part == 4)
                     {
-                        tileNumber += 12;
+                        tileNumber += 13;
+                    }
+                    else
+                    {
+                        tileNumber = 0;
                     }
                 }
 
@@ -379,11 +506,19 @@ public class LevelGenerator : MonoBehaviour
                         }
                     }
                 }
-                else if (tileNumber == 6 && doorwaySide == 1 && rowNumber == 0) //top door
+                else if (tileNumber == 6 && doorwaySide == 1 && rowNumber == 0 && part == 1) //top door
                 {
                     tileNumber += 3;
                 }
-                else if (tileNumber == 6 && doorwaySide == 3 && rowNumber == 10) // bottom door
+                else if (tileNumber == 6 && doorwaySide == 2 && rowNumber == 0 && part == 2) //top door
+                {
+                    tileNumber += 3;
+                }
+                else if (tileNumber == 6 && doorwaySide == 5 && rowNumber == 10 && part == 3) // bottom door
+                {
+                    tileNumber += 3;
+                }
+                else if (tileNumber == 6 && doorwaySide == 6 && rowNumber == 10 && part == 4) // bottom door
                 {
                     tileNumber += 3;
                 }
@@ -393,7 +528,7 @@ public class LevelGenerator : MonoBehaviour
                 }
                 else
                 {
-                    tileNumber += 12;
+                    tileNumber += 13;
                 }
             }
             rowNumber++;
@@ -465,16 +600,16 @@ public class LevelGenerator : MonoBehaviour
             }
             else
             {
-                tileNumber = 1;
+                tileNumber = 0;
             }
             
             foreach (GameObject tile in tileList)
             {
-                if (tileNumber == 1 && doorwaySide == 4)
+                if (tileNumber == 0 && doorwaySide == 4)
                 {
                     if (rowNumber == 5 || rowNumber == 6)
                     {
-                        tileNumber += 12;
+                        tileNumber += 13;
                     }
                 }
 
@@ -488,6 +623,11 @@ public class LevelGenerator : MonoBehaviour
                     {
                         tileNumber += 2;
                     }
+                    else
+                    {
+                        tileNumber += 13;
+                    }
+                    
                 }
                 else if (tileNumber == 6 && doorwaySide == 1 && rowNumber == 0) //top door
                 {
@@ -503,7 +643,7 @@ public class LevelGenerator : MonoBehaviour
                 }
                 else
                 {
-                    tileNumber += 12;
+                    tileNumber += 13;
                 }
             }
             rowNumber++;
