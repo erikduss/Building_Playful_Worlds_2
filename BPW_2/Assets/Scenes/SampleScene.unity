@@ -330,7 +330,6 @@ MonoBehaviour:
   - {fileID: 3886024948357708022, guid: 7970f0a182498cb4eb818c2d5dd993da, type: 3}
   - {fileID: 300755898608029156, guid: 3cb828a8f4d6ebc43b5ee34cc1ab2e8a, type: 3}
   - {fileID: 6472790222129747755, guid: 31b468c556b22ee49b69b28ad376f82d, type: 3}
-  amountOfRoomsGenerated: 0
   levelParentObject: {fileID: 0}
 --- !u!1 &1137780617
 GameObject:
