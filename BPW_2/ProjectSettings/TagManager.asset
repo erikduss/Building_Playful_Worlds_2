@@ -48,3 +48,6 @@ TagManager:
   - name: Player
     uniqueID: 795217977
     locked: 0
+  - name: ImportantTiles
+    uniqueID: 2258290747
+    locked: 0

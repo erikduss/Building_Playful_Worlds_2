@@ -25,6 +25,8 @@ public class LevelGenerator : MonoBehaviour
     private float minWidth = -1.28f;
     private float maxHeight = 2.56f;
 
+    public int spawnRoom;
+
     private int darknessHeight = 10;
     private int darknessWidth = 10;
 
@@ -37,7 +39,7 @@ public class LevelGenerator : MonoBehaviour
     private List<float> roomPositionsX = new List<float>();
     private List<float> roomPositionsY = new List<float>();
 
-    private List<Vector3> roomPositions = new List<Vector3>();
+    public List<Vector3> roomPositions = new List<Vector3>();
 
     private float roomLenth = 19.2f;
     private float roomHeight = 16.64f;
@@ -50,7 +52,7 @@ public class LevelGenerator : MonoBehaviour
     private int lastRoomPosition = 0;
     private int roomsSpawned = 0;
 
-    private bool fullyGenerated = false;
+    public bool fullyGenerated = false;
 
     public GameObject darknessTile;
 
@@ -59,9 +61,12 @@ public class LevelGenerator : MonoBehaviour
 
     private List<int> requiredAdditionalDoorways = new List<int>();
 
+    private GameManager gameManager;
+
     // Start is called before the first frame update
     void Start()
     {
+        gameManager = GetComponent<GameManager>();
         levelParentObject = GameObject.FindGameObjectWithTag("Level");
 
         //tile positions
@@ -166,13 +171,17 @@ public class LevelGenerator : MonoBehaviour
             lastRoomPosition = 0;
             amountOfGeneratedRooms = 0;
 
-            foreach(Transform child in levelParentObject.transform)
+            foreach (Transform child in levelParentObject.transform)
             {
                 GameObject.Destroy(child.gameObject);
             }
 
             GenerateDungeonFloor(3);
             GenerateRooms(36);
+        }
+        else
+        {
+            gameManager.LevelGenerationComplete(roomPositions[spawnRoom]);
         }
     }
 
@@ -181,7 +190,7 @@ public class LevelGenerator : MonoBehaviour
         int currentRow = 0;
         int currentRoom = 0;
 
-        int spawnRoom = 0;
+        spawnRoom = 0;
 
         int bossRoomDoorwayPos = Random.Range(1, 9);
 
