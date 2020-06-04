@@ -331,6 +331,8 @@ MonoBehaviour:
   - {fileID: 300755898608029156, guid: 3cb828a8f4d6ebc43b5ee34cc1ab2e8a, type: 3}
   - {fileID: 6472790222129747755, guid: 31b468c556b22ee49b69b28ad376f82d, type: 3}
   levelParentObject: {fileID: 0}
+  darknessTile: {fileID: 2472461345796557166, guid: cf6ac391d67497b4ab54de023c93afae,
+    type: 3}
 --- !u!1 &1137780617
 GameObject:
   m_ObjectHideFlags: 0
@@ -407,7 +409,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 795217977
-  m_SortingLayer: 1
+  m_SortingLayer: 2
   m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: 45febefabcc97824f8dfce2a874565e1, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

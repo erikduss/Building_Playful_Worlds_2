@@ -18,11 +18,15 @@ public class LevelGenerator : MonoBehaviour
     public List<GameObject> floorTiles = new List<GameObject>();
     
     private float tileSize = 1.28f;
-    private int roomLength = 13;
     private int wallLength = 4;
 
-    private int levelWidth = 150;
-    private int levelHeight = 150;
+    private float maxWidth = 115.2f;
+    private float minHeight = -98.56f;
+    private float minWidth = -1.28f;
+    private float maxHeight = 2.56f;
+
+    private int levelWidth = 120;
+    private int levelHeight = 100;
 
     private List<float> tilePositionsX = new List<float>();
     private List<float> tilePositionsY = new List<float>();
@@ -41,6 +45,10 @@ public class LevelGenerator : MonoBehaviour
 
     private int lastRoomPosition = 0;
     private int roomsSpawned = 0;
+
+    private bool fullyGenerated = false;
+
+    public GameObject darknessTile;
 
     private List<GameObject> generatedRooms = new List<GameObject>();
     private List<Room> roomsList = new List<Room>();
@@ -90,6 +98,31 @@ public class LevelGenerator : MonoBehaviour
 
         GenerateDungeonFloor(3);
         GenerateRooms(36); //36!!!
+    }
+
+    void CreateDarkSurrounding()
+    {
+
+    }
+
+    private void CheckDungeon()
+    {
+        if (!fullyGenerated)
+        {
+            roomsList.Clear();
+            generatedRooms.Clear();
+            roomsSpawned = 0;
+            lastRoomPosition = 0;
+            amountOfGeneratedRooms = 0;
+
+            foreach(Transform child in levelParentObject.transform)
+            {
+                GameObject.Destroy(child.gameObject);
+            }
+
+            GenerateDungeonFloor(3);
+            GenerateRooms(36);
+        }
     }
 
     private void GenerateRooms(int amount)
@@ -180,7 +213,7 @@ public class LevelGenerator : MonoBehaviour
         for (int i = 5; i < amount; i++)
         {
 
-            List<bool> possibleSpawns = possibleRooms();
+            List<bool> possibleSpawns = possibleRooms(100);
             List<int> spawnDirections = new List<int>();
             
 
@@ -215,7 +248,7 @@ public class LevelGenerator : MonoBehaviour
                     int newRoomID = GetAvailableRoom();
                     lastRoomPosition = roomsList[newRoomID].roomPosition;
 
-                    possibleSpawns = possibleRooms();
+                    possibleSpawns = possibleRooms(100);
 
                     if (possibleSpawns[0] == true && roomsList[newRoomID].doorPositions.Contains(1))//up
                     {
@@ -252,8 +285,6 @@ public class LevelGenerator : MonoBehaviour
                 }
             }
 
-            ////////////////////////////////
-
             if(roomSpawnDirection == 1)
             {
                 roomPos = lastRoomPosition - 6;
@@ -276,10 +307,9 @@ public class LevelGenerator : MonoBehaviour
             }
             else
             {
-                Debug.Log(CheckForRoomsWithOpenDoorways());
                 break;
             }
-            roomsList[i - 1].amountOfUnconnectedDoors--;
+
             if(roomsList[i - 1].amountOfUnconnectedDoors <= 0)
             {
                 roomsList[i - 1].hasUnconnectedDoors = false;
@@ -300,6 +330,11 @@ public class LevelGenerator : MonoBehaviour
                 currentRow++;
             }
         }
+        if(roomsList.Count == 36)
+        {
+            fullyGenerated = true;
+        }
+        CheckDungeon();
     }
 
     public void GenerateDungeonFloor(int randomness)
@@ -636,7 +671,7 @@ public class LevelGenerator : MonoBehaviour
         Room_gameobject.transform.parent = levelParentObject.transform;
         Room_gameobject.name = "Room_" + amountOfGeneratedRooms;
 
-            for (int i = 0; i < 14; i++)
+            for (int i = 0; i < 13; i++)
             {
                 for (int t = 0; t < 15; t++)
                 {
@@ -732,7 +767,7 @@ public class LevelGenerator : MonoBehaviour
         generatedRooms.Add(Room_gameobject);
     }
 
-    private List<bool> possibleRooms()
+    private List<bool> possibleRooms(int roomPosition)
     {
         List<bool> possibleSpawns = new List<bool>();
         int roomPos = 0;
@@ -743,9 +778,20 @@ public class LevelGenerator : MonoBehaviour
         bool canSpawnRight = false;
         bool canSpawnLeft = false;
 
-        roomPos = lastRoomPosition - 6; //up
+        int checkFromPos = 0;
 
-        if (lastRoomPosition == 0 || lastRoomPosition == 1 || lastRoomPosition == 2 || lastRoomPosition == 3 || lastRoomPosition == 4 || lastRoomPosition == 5 || lastRoomPosition == 26 || lastRoomPosition == 27)
+        if(roomPosition != 100)
+        {
+            roomPos = roomPosition - 6;
+            checkFromPos = roomPosition;
+        }
+        else
+        {
+            roomPos = lastRoomPosition - 6; //up
+            checkFromPos = lastRoomPosition;
+        }
+
+        if (checkFromPos == 0 || checkFromPos == 1 || checkFromPos == 2 || checkFromPos == 3 || checkFromPos == 4 || checkFromPos == 5 || checkFromPos == 26 || checkFromPos == 27)
         {
             canSpawnUp = false;
         }
@@ -757,6 +803,7 @@ public class LevelGenerator : MonoBehaviour
                 {
                     isOccupied = true;
                     canSpawnUp = false;
+                    break;
                 }
             }
             if (!isOccupied) // if it didnt find a room on the position
@@ -768,11 +815,20 @@ public class LevelGenerator : MonoBehaviour
         {
             canSpawnUp = false;
         }
-
+        
         isOccupied = false;
-        roomPos = lastRoomPosition + 6; //down
 
-        if (lastRoomPosition == 30 || lastRoomPosition == 31 || lastRoomPosition == 32 || lastRoomPosition == 33 || lastRoomPosition == 34 || lastRoomPosition == 35 || lastRoomPosition == 8 || lastRoomPosition == 9)
+        if (roomPosition != 100)
+        {
+            roomPos = roomPosition + 6;
+        }
+        else
+        {
+            roomPos = lastRoomPosition + 6; //down
+        }
+       
+
+        if (checkFromPos == 30 || checkFromPos == 31 || checkFromPos == 32 || checkFromPos == 33 || checkFromPos == 34 || checkFromPos == 35 || checkFromPos == 8 || checkFromPos == 9)
         {
             canSpawnDown = false;
         }
@@ -797,9 +853,18 @@ public class LevelGenerator : MonoBehaviour
         }
 
         isOccupied = false;
-        roomPos = lastRoomPosition + 1; //right
 
-        if (lastRoomPosition == 5 || lastRoomPosition == 11 || lastRoomPosition == 17 || lastRoomPosition == 23 || lastRoomPosition == 29 || lastRoomPosition == 35 || lastRoomPosition == 13 || lastRoomPosition == 19)
+        if (roomPosition != 100)
+        {
+            roomPos = roomPosition + 1;
+        }
+        else
+        {
+            roomPos = lastRoomPosition + 1; //right
+        }
+       
+
+        if (checkFromPos == 5 || checkFromPos == 11 || checkFromPos == 17 || checkFromPos == 23 || checkFromPos == 29 || checkFromPos == 35 || checkFromPos == 13 || checkFromPos == 19)
         {
             canSpawnRight = false;
         }
@@ -825,9 +890,18 @@ public class LevelGenerator : MonoBehaviour
         }
 
         isOccupied = false;
-        roomPos = lastRoomPosition - 1; //left
 
-        if (lastRoomPosition == 0 || lastRoomPosition == 6 || lastRoomPosition == 12 || lastRoomPosition == 18 || lastRoomPosition == 24 || lastRoomPosition == 30 || lastRoomPosition == 36 || lastRoomPosition == 16 || lastRoomPosition == 22)
+        if (roomPosition != 100)
+        {
+            roomPos = roomPosition - 1;
+        }
+        else
+        {
+            roomPos = lastRoomPosition - 1; //left
+        }
+        
+
+        if (checkFromPos == 0 || checkFromPos == 6 || checkFromPos == 12 || checkFromPos == 18 || checkFromPos == 24 || checkFromPos == 30 || checkFromPos == 36 || checkFromPos == 16 || checkFromPos == 22)
         {
             canSpawnLeft = false;
         }
@@ -860,17 +934,22 @@ public class LevelGenerator : MonoBehaviour
         return possibleSpawns;
     }
 
-    private bool doorLeftPossible()
+    private bool doorLeftPossible(int pos)
     {
         int roomPosToCheck = 0;
         bool isOccupied = false;
 
         bool canSpawnLeft = false;
 
-        isOccupied = false;
-        roomPosToCheck = lastRoomPosition - 1; //left
+        if(pos == 1)
+        {
 
-        if (roomPosToCheck == 0 || roomPosToCheck == 6 || roomPosToCheck == 12 || roomPosToCheck == 18 || roomPosToCheck == 24 || roomPosToCheck == 30 || roomPosToCheck == 36)
+        }
+
+        isOccupied = false;
+        roomPosToCheck = pos - 1; //left
+
+        if (pos == 0 || pos == 6 || pos == 12 || pos == 18 || pos == 24 || pos == 30 || pos == 36)
         {
             canSpawnLeft = false;
         }
@@ -883,13 +962,14 @@ public class LevelGenerator : MonoBehaviour
                     isOccupied = true;
                     if (checkRoom.hasUnconnectedDoors)
                     {
-                        if (checkRoom.doorPositions.Contains(4))
+                        if (checkRoom.doorPositions.Contains(2))
                         {
-                            requiredAdditionalDoorways.Add(2);
+                            requiredAdditionalDoorways.Add(4);
                             canSpawnLeft = false;
                             checkRoom.amountOfUnconnectedDoors--;
                             if (checkRoom.amountOfUnconnectedDoors <= 0)
                             {
+                                checkRoom.amountOfUnconnectedDoors = 0;
                                 checkRoom.hasUnconnectedDoors = false;
                             }
                         }
@@ -910,7 +990,7 @@ public class LevelGenerator : MonoBehaviour
         return canSpawnLeft;
     }
 
-    private bool doorRightPossible()
+    private bool doorRightPossible(int pos)
     {
         int roomPosToCheck = 0;
         bool isOccupied = false;
@@ -918,9 +998,9 @@ public class LevelGenerator : MonoBehaviour
         bool canSpawnRight = false;
 
         isOccupied = false;
-        roomPosToCheck = lastRoomPosition + 1; //right
+        roomPosToCheck = pos + 1; //right
 
-        if (roomPosToCheck == 5 || roomPosToCheck == 11 || roomPosToCheck == 17 || roomPosToCheck == 23 || roomPosToCheck == 29 || roomPosToCheck == 35)
+        if (pos == 5 || pos == 11 || pos == 17 || pos == 23 || pos == 29 || pos == 35)
         {
             canSpawnRight = false;
         }
@@ -933,13 +1013,14 @@ public class LevelGenerator : MonoBehaviour
                     isOccupied = true;
                     if (checkRoom.hasUnconnectedDoors)
                     {
-                        if (checkRoom.doorPositions.Contains(2))
+                        if (checkRoom.doorPositions.Contains(4))
                         {
-                            requiredAdditionalDoorways.Add(4);
+                            requiredAdditionalDoorways.Add(2);
                             canSpawnRight = false;
                             checkRoom.amountOfUnconnectedDoors--;
                             if (checkRoom.amountOfUnconnectedDoors <= 0)
                             {
+                                checkRoom.amountOfUnconnectedDoors = 0;
                                 checkRoom.hasUnconnectedDoors = false;
                             }
                         }
@@ -964,16 +1045,16 @@ public class LevelGenerator : MonoBehaviour
         return canSpawnRight;
     }
 
-    private bool doorUpPossible()
+    private bool doorUpPossible(int pos)
     {
         int roomPosToCheck = 0;
         bool isOccupied = false;
 
         bool canSpawnUp = false;
 
-        roomPosToCheck = lastRoomPosition - 6; //up
+        roomPosToCheck = pos - 6; //up
 
-        if (roomPosToCheck == 0 || roomPosToCheck == 1 || roomPosToCheck == 2 || roomPosToCheck == 3 || roomPosToCheck == 4 || roomPosToCheck == 5)
+        if (pos == 0 || pos == 1 || pos == 2 || pos == 3 || pos == 4 || pos == 5)
         {
             canSpawnUp = false;
         }
@@ -993,6 +1074,7 @@ public class LevelGenerator : MonoBehaviour
                             checkRoom.amountOfUnconnectedDoors--;
                             if (checkRoom.amountOfUnconnectedDoors <= 0)
                             {
+                                checkRoom.amountOfUnconnectedDoors = 0;
                                 checkRoom.hasUnconnectedDoors = false;
                             }
                         }
@@ -1020,7 +1102,7 @@ public class LevelGenerator : MonoBehaviour
         return canSpawnUp;
     }
 
-    private bool doorDownPossible()
+    private bool doorDownPossible(int pos)
     {
         int roomPosToCheck = 0;
         bool isOccupied = false;
@@ -1028,9 +1110,9 @@ public class LevelGenerator : MonoBehaviour
         bool canSpawnDown = false;
 
         isOccupied = false;
-        roomPosToCheck = lastRoomPosition + 6; //down
+        roomPosToCheck = pos + 6; //down
 
-        if (roomPosToCheck == 30 || roomPosToCheck == 31 || roomPosToCheck == 32 || roomPosToCheck == 33 || roomPosToCheck == 34 || roomPosToCheck == 35)
+        if (pos == 30 || pos == 31 || pos == 32 || pos == 33 || pos == 34 || pos == 35)
         {
             canSpawnDown = false;
         }
@@ -1050,6 +1132,7 @@ public class LevelGenerator : MonoBehaviour
                             checkRoom.amountOfUnconnectedDoors--;
                             if (checkRoom.amountOfUnconnectedDoors <= 0)
                             {
+                                checkRoom.amountOfUnconnectedDoors = 0;
                                 checkRoom.hasUnconnectedDoors = false;
                             }
                         }
@@ -1087,13 +1170,14 @@ public class LevelGenerator : MonoBehaviour
             {
                 if(tempRoom.amountOfUnconnectedDoors <= 0)
                 {
+                    tempRoom.amountOfUnconnectedDoors = 0;
                     tempRoom.hasUnconnectedDoors = false;
                 }
                 else
                 {
                     int newRoomID = tempRoom.roomID;
 
-                    List<bool> possibleSpawnsTEMP = possibleRooms();
+                    List<bool> possibleSpawnsTEMP = possibleRooms(tempRoom.roomPosition);
                     List<int> spawnDirectionsTEMP = new List<int>();
 
                     if (possibleSpawnsTEMP[0] == true && roomsList[newRoomID].doorPositions.Contains(1))//up
@@ -1142,10 +1226,11 @@ public class LevelGenerator : MonoBehaviour
         return (tempRoom.roomID);
     }
 
-    public void GenerateBasicRoom(int doorwayPosition, int roomPosition, bool spawnRoom)
+    public void GenerateBasicRoom(int doorwayPosition, int thisRoomPosition, bool spawnRoom)
     {
         Room generatedRoom = new Room();
         generatedRoom.roomID = amountOfGeneratedRooms;
+        generatedRoom.roomPosition = thisRoomPosition;
         roomsList.Add(generatedRoom);
 
         requiredAdditionalDoorways.Clear();
@@ -1174,20 +1259,20 @@ public class LevelGenerator : MonoBehaviour
             }
         }
 
-        if (doorLeftPossible() == true)
+        if (doorLeftPossible(thisRoomPosition) == true)
         {
-            if(roomPosition != 0 || roomPosition != 6 || roomPosition != 12 || roomPosition != 18 || roomPosition != 24 || roomPosition != 30 || roomPosition != 36 || roomPosition != 16 || roomPosition != 22)
+            if(thisRoomPosition != 0 || thisRoomPosition != 6 || thisRoomPosition != 12 || thisRoomPosition != 18 || thisRoomPosition != 24 || thisRoomPosition != 30 || thisRoomPosition != 36 || thisRoomPosition != 16 || thisRoomPosition != 22)
             {
-                    possibleDoorSpawns.Add(4);
+                 possibleDoorSpawns.Add(4);
             }
             else if (spawnRoom)
             {
                 possibleDoorSpawns.Add(4);
             }
         }
-        if (doorRightPossible() == true)
+        if (doorRightPossible(thisRoomPosition) == true)
         {
-            if (roomPosition != 5 || roomPosition != 11 || roomPosition != 17 || roomPosition != 23 || roomPosition != 29 || roomPosition != 35 || roomPosition != 13 || roomPosition != 19)
+            if (thisRoomPosition != 5 || thisRoomPosition != 11 || thisRoomPosition != 17 || thisRoomPosition != 23 || thisRoomPosition != 29 || thisRoomPosition != 35 || thisRoomPosition != 13 || thisRoomPosition != 19)
             {
                     possibleDoorSpawns.Add(2);
             }
@@ -1196,9 +1281,9 @@ public class LevelGenerator : MonoBehaviour
                 possibleDoorSpawns.Add(2);
             }
         }
-        if (doorUpPossible() == true)
+        if (doorUpPossible(thisRoomPosition) == true)
         {
-            if (roomPosition != 0 || roomPosition != 1 || roomPosition != 2 || roomPosition != 3 || roomPosition != 4 || roomPosition != 5 || roomPosition != 26 || roomPosition != 27)
+            if (thisRoomPosition != 0 || thisRoomPosition != 1 || thisRoomPosition != 2 || thisRoomPosition != 3 || thisRoomPosition != 4 || thisRoomPosition != 5 || thisRoomPosition != 26 || thisRoomPosition != 27)
             {
                     possibleDoorSpawns.Add(1);
             }
@@ -1207,9 +1292,9 @@ public class LevelGenerator : MonoBehaviour
                 possibleDoorSpawns.Add(1);
             }
         }
-        if (doorDownPossible() == true)
+        if (doorDownPossible(thisRoomPosition) == true)
         {
-            if (roomPosition != 30 || roomPosition != 31 || roomPosition != 32 || roomPosition != 33 || roomPosition != 34 || roomPosition != 35 || roomPosition != 36 || roomPosition != 8 || roomPosition != 9)
+            if (thisRoomPosition != 30 || thisRoomPosition != 31 || thisRoomPosition != 32 || thisRoomPosition != 33 || thisRoomPosition != 34 || thisRoomPosition != 35 || thisRoomPosition != 36 || thisRoomPosition != 8 || thisRoomPosition != 9)
             {
                     possibleDoorSpawns.Add(3);
             }
@@ -1225,7 +1310,7 @@ public class LevelGenerator : MonoBehaviour
         {
             if (possibleDoorSpawns.Contains(4) || requiredAdditionalDoorways.Contains(4))
             {
-                if(roomPosition == 0 || roomPosition == 6 || roomPosition == 12 || roomPosition == 18 || roomPosition == 24 || roomPosition == 30 || roomPosition == 13 || roomPosition == 19)
+                if(thisRoomPosition == 0 || thisRoomPosition == 6 || thisRoomPosition == 12 || thisRoomPosition == 18 || thisRoomPosition == 24 || thisRoomPosition == 30 || thisRoomPosition == 13 || thisRoomPosition == 19)
                 {
                     if (!spawnRoom)
                     {
@@ -1235,7 +1320,7 @@ public class LevelGenerator : MonoBehaviour
             }
             if (possibleDoorSpawns.Contains(2) || requiredAdditionalDoorways.Contains(2))
             {
-                if (roomPosition == 5 || roomPosition == 11 || roomPosition == 17 || roomPosition == 23 || roomPosition == 29 || roomPosition == 35 || roomPosition == 16 || roomPosition == 22)
+                if (thisRoomPosition == 5 || thisRoomPosition == 11 || thisRoomPosition == 17 || thisRoomPosition == 23 || thisRoomPosition == 29 || thisRoomPosition == 35 || thisRoomPosition == 16 || thisRoomPosition == 22)
                 {
                     if (!spawnRoom)
                     {
@@ -1248,7 +1333,7 @@ public class LevelGenerator : MonoBehaviour
         {
             if (possibleDoorSpawns.Contains(1) || requiredAdditionalDoorways.Contains(1))
             {
-                if (roomPosition == 26 || roomPosition == 27)
+                if (thisRoomPosition == 26 || thisRoomPosition == 27)
                 {
                     if (!spawnRoom)
                     {
@@ -1258,7 +1343,7 @@ public class LevelGenerator : MonoBehaviour
             }
             if (possibleDoorSpawns.Contains(3) || requiredAdditionalDoorways.Contains(3))
             {
-                if (roomPosition == 8 || roomPosition == 9)
+                if (thisRoomPosition == 8 || thisRoomPosition == 9)
                 {
                     if (!spawnRoom)
                     {
@@ -1270,13 +1355,13 @@ public class LevelGenerator : MonoBehaviour
 
         if (possibleDoorSpawns.Contains(2) || requiredAdditionalDoorways.Contains(2))
         {
-            if(roomPosition == 5 || roomPosition == 11 || roomPosition == 17 || roomPosition == 23 || roomPosition == 29 || roomPosition == 35)
+            if(thisRoomPosition == 5 || thisRoomPosition == 11 || thisRoomPosition == 17 || thisRoomPosition == 23 || thisRoomPosition == 29 || thisRoomPosition == 35)
             {
                 if (possibleDoorSpawns.Contains(2))
                 {
                     possibleDoorSpawns.Remove(2);
                 }
-                else
+                if (requiredAdditionalDoorways.Contains(2))
                 {
                     requiredAdditionalDoorways.Remove(2);
                 }
@@ -1285,13 +1370,13 @@ public class LevelGenerator : MonoBehaviour
 
         if (possibleDoorSpawns.Contains(4) || requiredAdditionalDoorways.Contains(4))
         {
-            if (roomPosition == 0 || roomPosition == 6 || roomPosition == 12 || roomPosition == 18 || roomPosition == 24 || roomPosition == 30)
+            if (thisRoomPosition == 0 || thisRoomPosition == 6 || thisRoomPosition == 12 || thisRoomPosition == 18 || thisRoomPosition == 24 || thisRoomPosition == 30)
             {
                 if (possibleDoorSpawns.Contains(4))
                 {
                     possibleDoorSpawns.Remove(4);
                 }
-                else
+                if(requiredAdditionalDoorways.Contains(4))
                 {
                     requiredAdditionalDoorways.Remove(4);
                 }
@@ -1305,7 +1390,7 @@ public class LevelGenerator : MonoBehaviour
         }
         ///////////////////////////////////////////////////
 
-        if (roomPosition == 7 || roomPosition == 8 || roomPosition == 9 || roomPosition == 10 || roomPosition == 13 || roomPosition == 16 || roomPosition == 19 || roomPosition == 22 || roomPosition == 25 || roomPosition == 26 || roomPosition == 27 || roomPosition == 28)
+        if (thisRoomPosition == 7 || thisRoomPosition == 8 || thisRoomPosition == 9 || thisRoomPosition == 10 || thisRoomPosition == 13 || thisRoomPosition == 16 || thisRoomPosition == 19 || thisRoomPosition == 22 || thisRoomPosition == 25 || thisRoomPosition == 26 || thisRoomPosition == 27 || thisRoomPosition == 28)
         {
             switch (possibleDoorSpawns.Count)
             {
@@ -1319,10 +1404,9 @@ public class LevelGenerator : MonoBehaviour
                     amountOfDoors = 3;
                     break;
                 case 4:
-                    amountOfDoors = Random.Range(3, possibleDoorSpawns.Count);
+                    amountOfDoors = 4;
                     break;
                 default:
-                    Debug.Log("DEFAULT FOR SOME REASON");
                     amountOfDoors = Random.Range(1, possibleDoorSpawns.Count);
                     break;
             }
@@ -1332,61 +1416,160 @@ public class LevelGenerator : MonoBehaviour
             amountOfDoors = Random.Range(1, possibleDoorSpawns.Count);
         }
 
-        amountOfDoors = possibleDoorSpawns.Count;
-
         List<int> doorsToSpawn = new List<int>();
 
-        if(possibleDoorSpawns.Count > 0)
+        if(thisRoomPosition == 1)
+        {
+            if (possibleDoorSpawns.Contains(4))
+            {
+                doorsToSpawn.Add(4);
+            }
+        }
+        else if (thisRoomPosition == 6)
+        {
+            if (possibleDoorSpawns.Contains(1))
+            {
+                doorsToSpawn.Add(1);
+            }
+        }
+        else if (thisRoomPosition == 24)
+        {
+            if (possibleDoorSpawns.Contains(3))
+            {
+                doorsToSpawn.Add(3);
+            }
+        }
+        else if (thisRoomPosition == 31)
+        {
+            if (possibleDoorSpawns.Contains(4))
+            {
+                doorsToSpawn.Add(4);
+            }
+        }
+        else if (thisRoomPosition == 4)
+        {
+            if (possibleDoorSpawns.Contains(2))
+            {
+                doorsToSpawn.Add(2);
+            }
+        }
+        else if (thisRoomPosition == 11)
+        {
+            if (possibleDoorSpawns.Contains(1))
+            {
+                doorsToSpawn.Add(1);
+            }
+        }
+        else if (thisRoomPosition == 29)
+        {
+            if (possibleDoorSpawns.Contains(3))
+            {
+                doorsToSpawn.Add(3);
+            }
+        }
+        else if (thisRoomPosition == 34)
+        {
+            if (possibleDoorSpawns.Contains(2))
+            {
+                doorsToSpawn.Add(2);
+            }
+        }
+
+        if (possibleDoorSpawns.Count > 0)
         {
             for (int t = 0; t < amountOfDoors; t++)
             {
-                doorsToSpawn.Add(possibleDoorSpawns[Random.Range(0, possibleDoorSpawns.Count)]);
+                int doorNumber = possibleDoorSpawns[Random.Range(0, possibleDoorSpawns.Count)];
+                if (!doorsToSpawn.Contains(doorNumber))
+                {
+                    doorsToSpawn.Add(doorNumber);
+                }
             }
         }
-        
 
         if (CheckForRoomsWithOpenDoorways() <= 1)
         {
-            Debug.Log("Need to add more doors");
             if(possibleDoorSpawns.Count > 0 && doorsToSpawn.Count == 0)
             {
-                doorsToSpawn.Add(possibleDoorSpawns[Random.Range(0, possibleDoorSpawns.Count)]);
+                int doorNumber = possibleDoorSpawns[Random.Range(0, possibleDoorSpawns.Count)];
+                if (!doorsToSpawn.Contains(doorNumber))
+                {
+                    doorsToSpawn.Add(doorNumber);
+                }
             }
             else if(possibleDoorSpawns.Count > 0 && doorsToSpawn.Count != possibleDoorSpawns.Count)
             {
-                doorsToSpawn.Add(possibleDoorSpawns[Random.Range(0, possibleDoorSpawns.Count)]);
+                int doorNumber = possibleDoorSpawns[Random.Range(0, possibleDoorSpawns.Count)];
+                if (!doorsToSpawn.Contains(doorNumber))
+                {
+                    doorsToSpawn.Add(doorNumber);
+                }
             }
             
         }
-        if(amountOfGeneratedRooms < 10 && doorsToSpawn.Count == 0)
+        if(amountOfGeneratedRooms < 10 && doorsToSpawn.Count == 0 && possibleDoorSpawns.Count > 0)
         {
-            doorsToSpawn.Add(possibleDoorSpawns[Random.Range(0, possibleDoorSpawns.Count)]);
+            int doorNumber = possibleDoorSpawns[Random.Range(0, possibleDoorSpawns.Count)];
+            if (!doorsToSpawn.Contains(doorNumber))
+            {
+                doorsToSpawn.Add(doorNumber);
+            }
+        }
+
+        if(amountOfGeneratedRooms > 20 && doorsToSpawn.Count <= 1 && possibleDoorSpawns.Count > 0)
+        {
+            int doorNumber = possibleDoorSpawns[Random.Range(0, possibleDoorSpawns.Count)];
+            if (!doorsToSpawn.Contains(doorNumber))
+            {
+                doorsToSpawn.Add(doorNumber);
+            }
         }
         
 
         if (doorsToSpawn.Count == 0)
         {
-            Debug.Log("NO DOORS?!?!?!");
+            if(possibleDoorSpawns.Count > 0 && amountOfGeneratedRooms >= 30)
+            {
+                int doorNumber = possibleDoorSpawns[Random.Range(1, possibleDoorSpawns.Count)];
+                if (!doorsToSpawn.Contains(doorNumber))
+                {
+                    doorsToSpawn.Add(doorNumber);
+                }
+            }
         }
-        
+
+        foreach(int tempInt in requiredAdditionalDoorways)
+        {
+            if (doorsToSpawn.Contains(tempInt))
+            {
+                doorsToSpawn.Remove(tempInt);
+            }
+        }
+
+        if (doorsToSpawn.Contains(requiredDoorwaySide))
+        {
+            doorsToSpawn.Remove(requiredDoorwaySide);
+        }
 
         roomsList[amountOfGeneratedRooms].roomID = amountOfGeneratedRooms;
         roomsList[amountOfGeneratedRooms].amountOfUnconnectedDoors = doorsToSpawn.Count;
         roomsList[amountOfGeneratedRooms].doorPositions.AddRange(doorsToSpawn);
         roomsList[amountOfGeneratedRooms].doorPositions.Add(requiredDoorwaySide);
         roomsList[amountOfGeneratedRooms].doorPositions.AddRange(requiredAdditionalDoorways);
-        roomsList[amountOfGeneratedRooms].hasUnconnectedDoors = true;
+        if(doorsToSpawn.Count > 0)
+        {
+            roomsList[amountOfGeneratedRooms].hasUnconnectedDoors = true;
+        }
 
-        doorsToSpawn.AddRange(requiredAdditionalDoorways);
+        int extraDoors = 0;
 
+        if (requiredAdditionalDoorways.Count > 0)
+        {
+            doorsToSpawn.AddRange(requiredAdditionalDoorways);
+            extraDoors += requiredAdditionalDoorways.Count;
+        }
 
         //EVERYTHING BELOW THIS WORKS AS INTENDED IF YOU ADD 4 DOORS STANDARD IT WILL ADD IT TO ALL OF THEM CORRECTLY
-
-        Debug.Log("Room: " + amountOfGeneratedRooms + "_" +requiredDoorwaySide);
-        foreach(int ttt in doorsToSpawn)
-        {
-            Debug.Log("Doors_" + amountOfGeneratedRooms + "_" + ttt);
-        }
 
         List<List<GameObject>> roomTiles = new List<List<GameObject>>();
 
@@ -1436,7 +1619,7 @@ public class LevelGenerator : MonoBehaviour
         Room_gameobject.transform.parent = levelParentObject.transform;
         if(doorwayPosition != 0)
         {
-            Room_gameobject.name = "Room_" + amountOfGeneratedRooms + "_MODIFIED" + "__" + requiredDoorwaySide + "_" + doorsToSpawn.Count;
+            Room_gameobject.name = "Room_" + amountOfGeneratedRooms + "_MODIFIED" + "__" + requiredDoorwaySide + "_" + (doorsToSpawn.Count - extraDoors);
         }
         else
         {
