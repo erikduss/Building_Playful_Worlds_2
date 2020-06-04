@@ -25,6 +25,9 @@ public class LevelGenerator : MonoBehaviour
     private float minWidth = -1.28f;
     private float maxHeight = 2.56f;
 
+    private int darknessHeight = 10;
+    private int darknessWidth = 10;
+
     private int levelWidth = 120;
     private int levelHeight = 100;
 
@@ -40,6 +43,7 @@ public class LevelGenerator : MonoBehaviour
     private float roomHeight = 16.64f;
 
     public GameObject levelParentObject;
+    public GameObject darknessParentObject;
 
     private int amountOfGeneratedRooms = 0;
 
@@ -96,13 +100,60 @@ public class LevelGenerator : MonoBehaviour
             }
         }
 
+        CreateDarkSurrounding();
         GenerateDungeonFloor(3);
         GenerateRooms(36); //36!!!
     }
 
     void CreateDarkSurrounding()
     {
+        // top layer of darkness
+        for(int t = 0; t < darknessHeight; t++)
+        {
+            float yPos = maxHeight + (t * tileSize);
+            for (float i = (minWidth - 10); i < (maxWidth + 10); i+=tileSize)
+            {
+                Vector3 tilePos = new Vector3(i, yPos, 0);
+                var roomTile = Instantiate(darknessTile, tilePos, Quaternion.identity);
+                roomTile.transform.parent = darknessParentObject.transform;
+            }
+        }
 
+        // bottom layer of darkness
+        for (int t = 0; t < darknessHeight; t++)
+        {
+            float yPos = minHeight - (t * tileSize);
+            for (float i = (minWidth - 10); i < (maxWidth + 10); i += tileSize)
+            {
+                Vector3 tilePos = new Vector3(i, yPos, 0);
+                var roomTile = Instantiate(darknessTile, tilePos, Quaternion.identity);
+                roomTile.transform.parent = darknessParentObject.transform;
+            }
+        }
+
+        // Left layer of darkness
+        for (int t = 0; t < darknessWidth; t++)
+        {
+            float xPos = minWidth - (t * tileSize);
+            for (float i = (minHeight - 10); i < (maxHeight + 10); i += tileSize)
+            {
+                Vector3 tilePos = new Vector3(xPos, i, 0);
+                var roomTile = Instantiate(darknessTile, tilePos, Quaternion.identity);
+                roomTile.transform.parent = darknessParentObject.transform;
+            }
+        }
+
+        // Right layer of darkness
+        for (int t = 0; t < darknessWidth; t++)
+        {
+            float xPos = maxWidth + (t * tileSize);
+            for (float i = (minHeight - 10); i < (maxHeight + 10); i += tileSize)
+            {
+                Vector3 tilePos = new Vector3(xPos, i, 0);
+                var roomTile = Instantiate(darknessTile, tilePos, Quaternion.identity);
+                roomTile.transform.parent = darknessParentObject.transform;
+            }
+        }
     }
 
     private void CheckDungeon()
@@ -1619,7 +1670,7 @@ public class LevelGenerator : MonoBehaviour
         Room_gameobject.transform.parent = levelParentObject.transform;
         if(doorwayPosition != 0)
         {
-            Room_gameobject.name = "Room_" + amountOfGeneratedRooms + "_MODIFIED" + "__" + requiredDoorwaySide + "_" + (doorsToSpawn.Count - extraDoors);
+            Room_gameobject.name = "Room_" + amountOfGeneratedRooms + "_MODIFIED";
         }
         else
         {
