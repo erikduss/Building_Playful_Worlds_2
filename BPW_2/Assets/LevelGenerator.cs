@@ -553,7 +553,7 @@ public class LevelGenerator : MonoBehaviour
             {
                 if (bossPart == 2 || bossPart == 4)
                 {
-                    returnList.Add(rightWallPrefabs[Random.Range(0, rightWallPrefabs.Count - 1)]);
+                    //returnList.Add(rightWallPrefabs[Random.Range(0, rightWallPrefabs.Count - 1)]);
                 }
             }
             else if (spawnedDoor && doorwayPlacement == 2)
@@ -1677,15 +1677,39 @@ public class LevelGenerator : MonoBehaviour
 
         GameObject Room_gameobject = new GameObject();
         Room_gameobject.transform.parent = levelParentObject.transform;
-        if(doorwayPosition != 0)
+
+        if (spawnRoom)
         {
-            Room_gameobject.name = "Room_" + amountOfGeneratedRooms + "_MODIFIED";
+            Room_gameobject.name = "Room_" + amountOfGeneratedRooms + "_SPAWN_ROOM";
+        }
+        else if(roomsList[amountOfGeneratedRooms-1].isPuzzleRoom || roomsList[amountOfGeneratedRooms - 1].isTreasureRoom || roomsList[amountOfGeneratedRooms - 1].isResourceRoom)
+        {
+            Room_gameobject.name = "Room_" + amountOfGeneratedRooms + "_EMPTY_ROOM";
         }
         else
         {
-            Room_gameobject.name = "Room_" + amountOfGeneratedRooms;
+            int roomChoice = Random.Range(1, 13);
+            if(roomChoice < 5) // 4 chances
+            {
+                roomsList[amountOfGeneratedRooms].isTreasureRoom = true;
+                Room_gameobject.name = "Room_" + amountOfGeneratedRooms + "_TREASURE_ROOM";
+            } 
+            else if (roomChoice == 5 || roomChoice == 6) //2 chances
+            {
+                roomsList[amountOfGeneratedRooms].isPuzzleRoom = true;
+                Room_gameobject.name = "Room_" + amountOfGeneratedRooms + "_PUZZLE_ROOM";
+            }
+            else if(roomChoice == 7 || roomChoice == 8 || roomChoice == 9) // 3 chances
+            {
+                roomsList[amountOfGeneratedRooms].isResourceRoom = true;
+                Room_gameobject.name = "Room_" + amountOfGeneratedRooms + "_RESOURCE_ROOM";
+            }
+            else // 3 chances
+            {
+                // default room
+                Room_gameobject.name = "Room_" + amountOfGeneratedRooms + "_EMPTY_ROOM";
+            }
         }
-        
 
         foreach (List<GameObject> tileList in roomTiles)
         {
