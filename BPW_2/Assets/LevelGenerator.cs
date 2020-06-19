@@ -13,7 +13,7 @@ public class LevelGenerator : MonoBehaviour
     public List<GameObject> leftWallPrefabs = new List<GameObject>();
 
     public List<GameObject> doorwayPrefabs = new List<GameObject>();
-
+    public List<GameObject> puzzleLockedDoors = new List<GameObject>();
 
     public List<GameObject> floorTiles = new List<GameObject>();
     
@@ -41,6 +41,8 @@ public class LevelGenerator : MonoBehaviour
 
     public List<Vector3> roomPositions = new List<Vector3>();
 
+    public GameObject puzzleRoomContent;
+
     private float roomLenth = 19.2f;
     private float roomHeight = 16.64f;
 
@@ -52,6 +54,9 @@ public class LevelGenerator : MonoBehaviour
     private int lastRoomPosition = 0;
     private int roomsSpawned = 0;
 
+    private bool spawnedPuzzleRoom = false;
+    private int enhancedRooms = 0;
+
     public bool fullyGenerated = false;
 
     public GameObject darknessTile;
@@ -60,6 +65,10 @@ public class LevelGenerator : MonoBehaviour
     private List<Room> roomsList = new List<Room>();
 
     private List<int> requiredAdditionalDoorways = new List<int>();
+
+    public GameObject enemiesParent;
+
+    public GameObject boss;
 
     private GameManager gameManager;
 
@@ -172,6 +181,11 @@ public class LevelGenerator : MonoBehaviour
             amountOfGeneratedRooms = 0;
 
             foreach (Transform child in levelParentObject.transform)
+            {
+                GameObject.Destroy(child.gameObject);
+            }
+
+            foreach (Transform child in enemiesParent.transform)
             {
                 GameObject.Destroy(child.gameObject);
             }
@@ -440,7 +454,7 @@ public class LevelGenerator : MonoBehaviour
         }
     }
 
-    private List<GameObject> createHorizontalWall(string wallPlacement, List<GameObject> wallPrefabToAdd, int doorwayPlacement, bool bossRoom, int bossPart, List<int> doorSpawns)
+    private List<GameObject> createHorizontalWall(string wallPlacement, List<GameObject> wallPrefabToAdd, int doorwayPlacement, bool bossRoom, int bossPart, List<int> doorSpawns, bool isPuzzleRoom)
     {
         List<GameObject> returnList = new List<GameObject>();
 
@@ -473,11 +487,39 @@ public class LevelGenerator : MonoBehaviour
         {
             if (doorwayPlacement == 1 && wallPlacement == "Top" || doorSpawns.Contains(1) && wallPlacement == "Top")
             {
-                returnList.Add(doorwayPrefabs[2]);
+                if (isPuzzleRoom)
+                {
+                    if (doorwayPlacement == 1)
+                    {
+                        returnList.Add(doorwayPrefabs[2]);
+                    }
+                    else
+                    {
+                        returnList.Add(puzzleLockedDoors[3]);
+                    }
+                }
+                else
+                {
+                    returnList.Add(doorwayPrefabs[2]);
+                }
             }
             else if (doorwayPlacement == 3 && wallPlacement == "Bottom" || doorSpawns.Contains(3) && wallPlacement == "Bottom")
             {
-                returnList.Add(doorwayPrefabs[0]);
+                if (isPuzzleRoom)
+                {
+                    if (doorwayPlacement == 3)
+                    {
+                        returnList.Add(doorwayPrefabs[0]);
+                    }
+                    else
+                    {
+                        returnList.Add(puzzleLockedDoors[0]);
+                    }
+                }
+                else
+                {
+                    returnList.Add(doorwayPrefabs[0]);
+                }
             }
             else //add replacement walls
             {
@@ -601,7 +643,7 @@ public class LevelGenerator : MonoBehaviour
         return returnList;
     }
 
-    private List<GameObject> createSideWallsRow(bool spawnDoor, int doorwayPlacement, bool spawnedDoor, List<int> doorSpawns)
+    private List<GameObject> createSideWallsRow(bool spawnDoor, int doorwayPlacement, bool spawnedDoor, List<int> doorSpawns, bool isPuzzleRoom)
     {
         List<GameObject> returnList = new List<GameObject>();
 
@@ -636,18 +678,46 @@ public class LevelGenerator : MonoBehaviour
         }
         else
         {
-            if (doorwayPlacement == 4 || doorSpawns.Contains(4))
+            if (doorwayPlacement == 4 || doorSpawns.Contains(4)) //LEFT DOOR
             {
-                returnList.Add(doorwayPrefabs[1]);
+                if (isPuzzleRoom)
+                {
+                    if(doorwayPlacement == 4)
+                    {
+                        returnList.Add(doorwayPrefabs[1]);
+                    }
+                    else
+                    {
+                        returnList.Add(puzzleLockedDoors[1]);
+                    }
+                }
+                else
+                {
+                    returnList.Add(doorwayPrefabs[1]);
+                }
             }
             else if(doorwayPlacement != 4 && !doorSpawns.Contains(4))
             {
                 returnList.Add(leftWallPrefabs[Random.Range(0, leftWallPrefabs.Count - 1)]);
             }
 
-            if (doorwayPlacement == 2 || doorSpawns.Contains(2))
+            if (doorwayPlacement == 2 || doorSpawns.Contains(2)) //RIGHT DOOR
             {
-                returnList.Add(doorwayPrefabs[3]);
+                if (isPuzzleRoom)
+                {
+                    if (doorwayPlacement == 2)
+                    {
+                        returnList.Add(doorwayPrefabs[3]);
+                    }
+                    else
+                    {
+                        returnList.Add(puzzleLockedDoors[2]);
+                    }
+                }
+                else
+                {
+                    returnList.Add(doorwayPrefabs[3]);
+                }
             }
             else if(doorwayPlacement != 2 && !doorSpawns.Contains(2))
             {
@@ -671,7 +741,7 @@ public class LevelGenerator : MonoBehaviour
         #region top Wall spawning
         if (part == 1 || part == 2)
         {
-            roomTiles.Add(createHorizontalWall("Top", topWallPrefabs, doorwaySide, true, part, null));
+            roomTiles.Add(createHorizontalWall("Top", topWallPrefabs, doorwaySide, true, part, null, false));
         }
         else
         {
@@ -715,7 +785,7 @@ public class LevelGenerator : MonoBehaviour
 
         if (part == 3 || part == 4)
         {
-            roomTiles.Add(createHorizontalWall("Bottom", bottomWallPrefabs, doorwaySide, true, part, null));
+            roomTiles.Add(createHorizontalWall("Bottom", bottomWallPrefabs, doorwaySide, true, part, null, false));
         }
         else
         {
@@ -823,6 +893,14 @@ public class LevelGenerator : MonoBehaviour
             }
             rowNumber++;
         }
+
+        if(part == 1)
+        {
+            var bossCharacter = Instantiate(boss, new Vector3(roomPositions[14].x + 10, roomPositions[14].y - 10, 0), Quaternion.identity);
+            bossCharacter.transform.parent = enemiesParent.transform;
+            bossCharacter.GetComponent<EnemyController>().setRoomPosition(roomPositions[14]);
+        }
+
         amountOfGeneratedRooms++;
         generatedRooms.Add(Room_gameobject);
     }
@@ -1631,17 +1709,100 @@ public class LevelGenerator : MonoBehaviour
 
         //EVERYTHING BELOW THIS WORKS AS INTENDED IF YOU ADD 4 DOORS STANDARD IT WILL ADD IT TO ALL OF THEM CORRECTLY
 
+
+        GameObject Room_gameobject = new GameObject();
+        Room_gameobject.transform.parent = levelParentObject.transform;
+
+        bool isPuzzleRoom = false;
+        int randomChoice = Random.Range(1, 6);
+
+        if (spawnRoom)
+        {
+            Room_gameobject.name = "Room_" + amountOfGeneratedRooms + "_SPAWN_ROOM";
+        }
+        else if (roomsList[amountOfGeneratedRooms - 1].isPuzzleRoom && randomChoice != 1 || roomsList[amountOfGeneratedRooms - 1].isTreasureRoom && randomChoice != 1 || roomsList[amountOfGeneratedRooms - 1].isResourceRoom && randomChoice != 1)
+        {
+            Room_gameobject.name = "Room_" + amountOfGeneratedRooms + "_EMPTY_ROOM";
+        }
+        else
+        {
+            int roomChoice = 0;
+            if (spawnedPuzzleRoom)
+            {
+                roomChoice = Random.Range(1, 11);
+            }
+            else
+            {
+                roomChoice = Random.Range(1, 15);
+            }
+
+            bool isenhancedRoom = false;
+
+            if (enhancedRooms > 0)
+            {
+                isenhancedRoom = true;
+            }
+
+            if (roomChoice < 5) // 4 chances
+            {
+                roomsList[amountOfGeneratedRooms].isTreasureRoom = true;
+                if (isenhancedRoom)
+                {
+                    Room_gameobject.name = "Room_" + amountOfGeneratedRooms + "_TREASURE_ROOM_EXTRA";
+                    enhancedRooms--;
+                }
+                else
+                {
+                    Room_gameobject.name = "Room_" + amountOfGeneratedRooms + "_TREASURE_ROOM";
+                }
+            }
+            else if (roomChoice > 11)
+            {
+                roomsList[amountOfGeneratedRooms].isPuzzleRoom = true;
+                isPuzzleRoom = true;
+                if (isenhancedRoom)
+                {
+                    Room_gameobject.name = "Room_" + amountOfGeneratedRooms + "_PUZZLE_ROOM_EXTRA";
+                    enhancedRooms--;
+                }
+                else
+                {
+                    Room_gameobject.name = "Room_" + amountOfGeneratedRooms + "_PUZZLE_ROOM";
+                }
+
+            }
+            else if (roomChoice == 7 || roomChoice == 8 || roomChoice == 9) // 3 chances
+            {
+                roomsList[amountOfGeneratedRooms].isResourceRoom = true;
+                if (isenhancedRoom)
+                {
+                    Room_gameobject.name = "Room_" + amountOfGeneratedRooms + "_RESOURCE_ROOM_EXTRA";
+                    enhancedRooms--;
+                }
+                else
+                {
+                    Room_gameobject.name = "Room_" + amountOfGeneratedRooms + "_RESOURCE_ROOM";
+                }
+            }
+            else // 3 chances
+            {
+                // default room
+                Room_gameobject.name = "Room_" + amountOfGeneratedRooms + "_EMPTY_ROOM";
+            }
+        }
+
+
         List<List<GameObject>> roomTiles = new List<List<GameObject>>();
 
         #region top Wall spawning
-        roomTiles.Add(createHorizontalWall("Top", topWallPrefabs, requiredDoorwaySide, false, 0, doorsToSpawn));
+        roomTiles.Add(createHorizontalWall("Top", topWallPrefabs, requiredDoorwaySide, false, 0, doorsToSpawn, isPuzzleRoom));
         #endregion
 
         int tileNumber = 0;
 
         for(int i = 0; i < 3; i++)
         {
-            roomTiles.Add(createSideWallsRow(false, requiredDoorwaySide, false, doorsToSpawn));
+            roomTiles.Add(createSideWallsRow(false, requiredDoorwaySide, false, doorsToSpawn, isPuzzleRoom));
         }
 
         bool spawnedDoor = false;
@@ -1652,64 +1813,30 @@ public class LevelGenerator : MonoBehaviour
             {
                 if (!spawnedDoor)
                 {
-                    roomTiles.Add(createSideWallsRow(true, requiredDoorwaySide, false, doorsToSpawn));
+                    roomTiles.Add(createSideWallsRow(true, requiredDoorwaySide, false, doorsToSpawn, isPuzzleRoom));
                     spawnedDoor = true;
                 }
                 else
                 {
-                    roomTiles.Add(createSideWallsRow(false, requiredDoorwaySide, true, doorsToSpawn));
+                    roomTiles.Add(createSideWallsRow(false, requiredDoorwaySide, true, doorsToSpawn, isPuzzleRoom));
                 }
             }
             else
             {
-                roomTiles.Add(createSideWallsRow(false, requiredDoorwaySide, false, doorsToSpawn));
+                roomTiles.Add(createSideWallsRow(false, requiredDoorwaySide, false, doorsToSpawn, isPuzzleRoom));
             }
         }
 
         for (int i = 0; i < 3; i++)
         {
-            roomTiles.Add(createSideWallsRow(false, requiredDoorwaySide, false, doorsToSpawn));
+            roomTiles.Add(createSideWallsRow(false, requiredDoorwaySide, false, doorsToSpawn, isPuzzleRoom));
         }
 
-        roomTiles.Add(createHorizontalWall("Bottom", bottomWallPrefabs, requiredDoorwaySide, false, 0, doorsToSpawn));
+        roomTiles.Add(createHorizontalWall("Bottom", bottomWallPrefabs, requiredDoorwaySide, false, 0, doorsToSpawn, isPuzzleRoom));
 
         int rowNumber = 0;
 
-        GameObject Room_gameobject = new GameObject();
-        Room_gameobject.transform.parent = levelParentObject.transform;
-
-        if (spawnRoom)
-        {
-            Room_gameobject.name = "Room_" + amountOfGeneratedRooms + "_SPAWN_ROOM";
-        }
-        else if(roomsList[amountOfGeneratedRooms-1].isPuzzleRoom || roomsList[amountOfGeneratedRooms - 1].isTreasureRoom || roomsList[amountOfGeneratedRooms - 1].isResourceRoom)
-        {
-            Room_gameobject.name = "Room_" + amountOfGeneratedRooms + "_EMPTY_ROOM";
-        }
-        else
-        {
-            int roomChoice = Random.Range(1, 13);
-            if(roomChoice < 5) // 4 chances
-            {
-                roomsList[amountOfGeneratedRooms].isTreasureRoom = true;
-                Room_gameobject.name = "Room_" + amountOfGeneratedRooms + "_TREASURE_ROOM";
-            } 
-            else if (roomChoice == 5 || roomChoice == 6) //2 chances
-            {
-                roomsList[amountOfGeneratedRooms].isPuzzleRoom = true;
-                Room_gameobject.name = "Room_" + amountOfGeneratedRooms + "_PUZZLE_ROOM";
-            }
-            else if(roomChoice == 7 || roomChoice == 8 || roomChoice == 9) // 3 chances
-            {
-                roomsList[amountOfGeneratedRooms].isResourceRoom = true;
-                Room_gameobject.name = "Room_" + amountOfGeneratedRooms + "_RESOURCE_ROOM";
-            }
-            else // 3 chances
-            {
-                // default room
-                Room_gameobject.name = "Room_" + amountOfGeneratedRooms + "_EMPTY_ROOM";
-            }
-        }
+        
 
         foreach (List<GameObject> tileList in roomTiles)
         {
@@ -1773,6 +1900,17 @@ public class LevelGenerator : MonoBehaviour
             }
             rowNumber++;
         }
+
+        if (isPuzzleRoom)
+        {
+            Vector3 puzzlePosition = new Vector3(5.66f, -3.32f, 0);
+
+            var roomcontent = Instantiate(puzzleRoomContent, puzzlePosition, Quaternion.identity);
+            roomcontent.transform.parent = Room_gameobject.transform;
+            enhancedRooms = 3;
+            spawnedPuzzleRoom = true;
+        }
+        
         amountOfGeneratedRooms++;
         generatedRooms.Add(Room_gameobject);
     }

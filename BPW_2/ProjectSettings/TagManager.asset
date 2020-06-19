@@ -6,6 +6,8 @@ TagManager:
   tags:
   - Level
   - PuzzleEnd
+  - PuzzleLockedDoor
+  - Boss
   layers:
   - Default
   - TransparentFX
