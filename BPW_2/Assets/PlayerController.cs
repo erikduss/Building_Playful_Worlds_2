@@ -12,55 +12,148 @@ public class PlayerController : MonoBehaviour {
 
     private bool freezePlayer = false;
 
-	// Use this for initialization
-	void Start () {
+    private int health = 100;
+    private int baseDamage = 60;
+
+    private GameManager gameManager;
+
+    private BoxCollider2D collider;
+
+    public int amountOfKeys = 0;
+
+    private Vector2 center { get { return collider.bounds.center; } }
+
+    // Use this for initialization
+    void Start () {
+        collider = GetComponent<BoxCollider2D>();
+        gameManager = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameManager>();
         rbPlayer = this.GetComponent<Rigidbody2D>();
         animPlayer = this.GetComponent<Animator>();
 	}
-	
-    void getDirection()
+
+    void Update()
     {
-        Debug.Log(facingDirection);
-    }
-
-	// Update is called once per frame
-	void FixedUpdate () {
-        if (!freezePlayer)
-        {
-            MovePlayer();
-        }
-
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            rbPlayer.velocity = new Vector2(0,0);
+            rbPlayer.velocity = new Vector2(0, 0);
             animPlayer.SetFloat("horizontalSpeed", 0);
             animPlayer.SetFloat("verticalSpeed", 0);
+
+            int directionID = 0;
 
             switch (facingDirection)
             {
                 case "Front":
                     animPlayer.Play("front_slashing");
+                    directionID = 3;
                     break;
                 case "Back":
                     animPlayer.Play("back_slashing");
+                    directionID = 1;
                     break;
                 case "Left":
                     animPlayer.Play("left_slashing");
+                    directionID = 4;
                     break;
                 case "Right":
                     animPlayer.Play("right_slashing");
+                    directionID = 2;
                     break;
             }
-            StartCoroutine(freezePlayerMovement(1));
-        }
 
+            StartCoroutine(PlayerAttackFreeze(1, directionID));
+        }
+    }
+
+    // Update is called once per frame
+    void FixedUpdate ()
+    {
+        if (!freezePlayer)
+        {
+            MovePlayer();
+        }
 	}
 
-    private IEnumerator freezePlayerMovement(int time)
+    private bool hitSomething(out RaycastHit2D hit, int direction)
+    {
+        Vector2 start = transform.position;
+
+        Vector2 end = start + new Vector2(0, 0);
+
+        float raySize = 1.2f;
+
+        switch (direction)
+        {
+            case 1:
+                end = start + new Vector2(0, raySize);
+                break;
+            case 2:
+                end = start + new Vector2(raySize, 0);
+                break;
+            case 3:
+                end = start + new Vector2(0, -raySize);
+                break;
+            case 4:
+                end = start + new Vector2(-raySize, 0);
+                break;
+        }
+
+        collider.enabled = false;
+        hit = Physics2D.Linecast(center, end);
+        collider.enabled = true;
+
+        if (hit.transform == null)
+        {
+            return true;
+        }
+
+        if (hit.transform.tag == "Enemy" || hit.transform.tag == "Boss")
+        {
+            hit.transform.GetComponent<EnemyController>().gotHitByPlayer(gameManager.calculateDamageTaken(baseDamage, false));
+        }
+
+        return false;
+    }
+
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if(collision.name == "BossAreaEnter")
+        {
+            gameManager.SwitchBossActivationState(true);
+        }
+        else if (collision.tag == "Enemy")
+        {
+            gameManager.SwitchEnemyActivationState(true, collision.GetComponent<EnemyController>());
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.name == "BossAreaEnter")
+        {
+            gameManager.SwitchBossActivationState(false);
+        }
+        else if (collision.tag == "Enemy")
+        {
+            gameManager.SwitchEnemyActivationState(false, collision.GetComponent<EnemyController>());
+        }
+    }
+
+    private IEnumerator PlayerAttackFreeze(int time, int directionID)
     {
         freezePlayer = true;
-        yield return new WaitForSeconds(time);
+        yield return new WaitForSeconds(0.2f);
+        RaycastHit2D hit;
+        hitSomething(out hit, directionID);
+        yield return new WaitForSeconds((time - 0.2f));
         freezePlayer = false;
+    }
+
+    public void gotHitByEnemy(int damage)
+    {
+        int actualDamage = gameManager.calculateDamageTaken(damage, true);
+        health -= actualDamage;
     }
 
     void MovePlayer()

@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3042505227021502281}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Right_V3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -43,7 +43,7 @@ GameObject:
   - component: {fileID: 1588217527794753005}
   - component: {fileID: 8840014488604758802}
   - component: {fileID: 7980937863641966174}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Dungeon@128x128_120
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -151,7 +151,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1882192918714097839}
   - component: {fileID: 6781492912816454634}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Dungeon@128x128_137
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1725765769595380489}
   - component: {fileID: 716306152640044442}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Dungeon@128x128_144
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -92,8 +92,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7654821372426098219}
   - component: {fileID: 4588169186266744598}
-  - component: {fileID: 442510226724572100}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Dungeon@128x128_145
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -165,32 +164,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!61 &442510226724572100
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2036256705551130245}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1.28, y: 1.28}
-    newSize: {x: 1.28, y: 1.28}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 1.28, y: 1.28}
-  m_EdgeRadius: 0
 --- !u!1 &2262570557427110319
 GameObject:
   m_ObjectHideFlags: 0
@@ -201,7 +174,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6203109953679787028}
   - component: {fileID: 473515371299886316}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Dungeon@128x128_128
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -259,7 +232,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -2036676549
-  m_SortingLayer: 3
+  m_SortingLayer: 4
   m_SortingOrder: 1
   m_Sprite: {fileID: -5119580667097407993, guid: 68ff880ee26626446a8b5976dd44f340,
     type: 3}
@@ -282,7 +255,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8495918994482529539}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Doorway_Top
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -320,7 +293,7 @@ GameObject:
   - component: {fileID: 5877301321936322885}
   - component: {fileID: 8255883240428416778}
   - component: {fileID: 7947666720857773080}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Dungeon@128x128_127
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -378,7 +351,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -2036676549
-  m_SortingLayer: 3
+  m_SortingLayer: 4
   m_SortingOrder: 1
   m_Sprite: {fileID: -6783301003526177984, guid: 68ff880ee26626446a8b5976dd44f340,
     type: 3}
@@ -429,7 +402,7 @@ GameObject:
   - component: {fileID: 6481282105540980570}
   - component: {fileID: 2328059224234579778}
   - component: {fileID: 8760703626254899381}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Dungeon@128x128_129
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -487,7 +460,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -2036676549
-  m_SortingLayer: 3
+  m_SortingLayer: 4
   m_SortingOrder: 1
   m_Sprite: {fileID: 4308297453106753112, guid: 68ff880ee26626446a8b5976dd44f340,
     type: 3}
@@ -537,8 +510,7 @@ GameObject:
   m_Component:
   - component: {fileID: 279179040500557861}
   - component: {fileID: 8272797118711844666}
-  - component: {fileID: 7089403231014629417}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Dungeon@128x128_143
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -610,29 +582,3 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!61 &7089403231014629417
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7797401866172246540}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1.28, y: 1.28}
-    newSize: {x: 1.28, y: 1.28}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 1.28, y: 1.28}
-  m_EdgeRadius: 0

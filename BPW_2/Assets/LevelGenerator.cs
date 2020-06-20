@@ -42,6 +42,7 @@ public class LevelGenerator : MonoBehaviour
     public List<Vector3> roomPositions = new List<Vector3>();
 
     public GameObject puzzleRoomContent;
+    public GameObject treasureRoomContent;
 
     private float roomLenth = 19.2f;
     private float roomHeight = 16.64f;
@@ -69,6 +70,7 @@ public class LevelGenerator : MonoBehaviour
     public GameObject enemiesParent;
 
     public GameObject boss;
+    public GameObject enemy;
 
     private GameManager gameManager;
 
@@ -195,7 +197,7 @@ public class LevelGenerator : MonoBehaviour
         }
         else
         {
-            gameManager.LevelGenerationComplete(roomPositions[spawnRoom]);
+            gameManager.LevelGenerationComplete(roomPositions[spawnRoom], roomsList);
         }
     }
 
@@ -223,6 +225,12 @@ public class LevelGenerator : MonoBehaviour
         CreateBossRoom(4, bossRoomDoorwayPos);
         generatedRooms[3].transform.position = roomPositions[21];
         roomsList[3].roomPosition = 21;
+
+        BoxCollider2D col = generatedRooms[0].AddComponent<BoxCollider2D>();
+        col.isTrigger = true;
+        col.name = "BossAreaEnter";
+        col.size = new Vector2(35f, 30f);
+        col.offset = new Vector2(18.5f, -14.5f);
 
         switch (bossRoomDoorwayPos)
         {
@@ -1714,6 +1722,7 @@ public class LevelGenerator : MonoBehaviour
         Room_gameobject.transform.parent = levelParentObject.transform;
 
         bool isPuzzleRoom = false;
+        bool isTreasureRoom = false;
         int randomChoice = Random.Range(1, 6);
 
         if (spawnRoom)
@@ -1746,6 +1755,7 @@ public class LevelGenerator : MonoBehaviour
             if (roomChoice < 5) // 4 chances
             {
                 roomsList[amountOfGeneratedRooms].isTreasureRoom = true;
+                isTreasureRoom = true;
                 if (isenhancedRoom)
                 {
                     Room_gameobject.name = "Room_" + amountOfGeneratedRooms + "_TREASURE_ROOM_EXTRA";
@@ -1909,6 +1919,22 @@ public class LevelGenerator : MonoBehaviour
             roomcontent.transform.parent = Room_gameobject.transform;
             enhancedRooms = 3;
             spawnedPuzzleRoom = true;
+        }
+        else if (isTreasureRoom)
+        {
+            for(int i = 0; i < 3; i++)
+            {
+                Vector2 spawnOffset = new Vector2(Random.Range(3, 10), Random.Range(3, 10));
+                var enemyCharacter = Instantiate(enemy, new Vector3(roomPositions[thisRoomPosition].x + spawnOffset.x, roomPositions[thisRoomPosition].y - spawnOffset.y, 0), Quaternion.identity);
+                enemyCharacter.transform.parent = enemiesParent.transform;
+                enemyCharacter.GetComponent<EnemyController>().setRoomPosition(roomPositions[thisRoomPosition]);
+                enemyCharacter.GetComponent<EnemyController>().roomID = thisRoomPosition;
+            }
+            Vector3 contentPosition = new Vector3(5.49f, -3.72f, 0);
+
+            var roomcontent = Instantiate(treasureRoomContent, contentPosition, Quaternion.identity);
+            roomcontent.transform.parent = Room_gameobject.transform;
+            
         }
         
         amountOfGeneratedRooms++;

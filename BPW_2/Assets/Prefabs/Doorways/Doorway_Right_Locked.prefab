@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6067749637298365484}
   - component: {fileID: 7389806888211812861}
   - component: {fileID: 2785750299945562560}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Dungeon@128x128_132
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -118,7 +118,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8288078152507279754}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Doorway_Right_Locked
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -157,7 +157,7 @@ GameObject:
   - component: {fileID: 4769741692527717840}
   - component: {fileID: 8870543913875778691}
   - component: {fileID: 5321087946361596685}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Dungeon@128x128_195
   m_TagString: PuzzleLockedDoor
   m_Icon: {fileID: 0}
@@ -252,7 +252,7 @@ GameObject:
   m_Component:
   - component: {fileID: 622034297455784247}
   - component: {fileID: 4762926032958902940}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Dungeon@128x128_148
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -335,7 +335,7 @@ GameObject:
   - component: {fileID: 4670129905649675587}
   - component: {fileID: 6785718264882224850}
   - component: {fileID: 6072985981340879782}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Dungeon@128x128_164
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -444,7 +444,7 @@ GameObject:
   - component: {fileID: 6302249253514218770}
   - component: {fileID: 4463450378730244257}
   - component: {fileID: 715345637556320897}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Dungeon@128x128_165
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -553,7 +553,7 @@ GameObject:
   - component: {fileID: 1482157448710982994}
   - component: {fileID: 3642377590171192184}
   - component: {fileID: 6074322561223284125}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Dungeon@128x128_133
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -661,7 +661,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2059777344996060904}
   - component: {fileID: 3873133184511662720}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Dungeon@128x128_149
   m_TagString: Untagged
   m_Icon: {fileID: 0}

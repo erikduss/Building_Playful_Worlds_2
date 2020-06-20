@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2023098872572968451}
   - component: {fileID: 4544670569329627212}
   - component: {fileID: 2578569288926194526}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Dungeon@128x128_127
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -120,7 +120,7 @@ GameObject:
   - component: {fileID: 1472958970864537628}
   - component: {fileID: 7912207009294084100}
   - component: {fileID: 3753581330762360819}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Dungeon@128x128_129
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -229,7 +229,7 @@ GameObject:
   - component: {fileID: 5646656342224770915}
   - component: {fileID: 4561516371786559612}
   - component: {fileID: 3450247080170524527}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Dungeon@128x128_143
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -337,7 +337,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6516714226957179983}
   - component: {fileID: 4932558126773691100}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Dungeon@128x128_144
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -420,7 +420,7 @@ GameObject:
   - component: {fileID: 2862108645510883693}
   - component: {fileID: 8227883339127994448}
   - component: {fileID: 5451395598448325762}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Dungeon@128x128_145
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -528,7 +528,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1988053904650189650}
   - component: {fileID: 5409210617456421802}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Dungeon@128x128_128
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -609,7 +609,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4063569108164590149}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Doorway_Top_Locked
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -648,7 +648,7 @@ GameObject:
   - component: {fileID: 65697703393042216}
   - component: {fileID: 2686271372038942640}
   - component: {fileID: 6895501706549550789}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Dungeon@128x128_192
   m_TagString: PuzzleLockedDoor
   m_Icon: {fileID: 0}
@@ -733,7 +733,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0.10706663}
+  m_Offset: {x: 0, y: 1.28}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}

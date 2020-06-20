@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 833946638157560238}
   - component: {fileID: 9135588110247711361}
   - component: {fileID: 621912534667312335}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Dungeon@128x128_175
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -69,7 +69,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -2036676549
-  m_SortingLayer: 3
+  m_SortingLayer: 4
   m_SortingOrder: 1
   m_Sprite: {fileID: 1852133814612490168, guid: 68ff880ee26626446a8b5976dd44f340,
     type: 3}
@@ -118,7 +118,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8859819105910184224}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Doorway_Bottom
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -156,7 +156,7 @@ GameObject:
   - component: {fileID: 3965528911305624803}
   - component: {fileID: 3865739143359108525}
   - component: {fileID: 7378696270620843471}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Dungeon@128x128_161
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -265,7 +265,7 @@ GameObject:
   - component: {fileID: 6929975008245644818}
   - component: {fileID: 8454024813956284112}
   - component: {fileID: 7723481041948564761}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Dungeon@128x128_177
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -323,7 +323,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -2036676549
-  m_SortingLayer: 3
+  m_SortingLayer: 4
   m_SortingOrder: 1
   m_Sprite: {fileID: 7159420889674145090, guid: 68ff880ee26626446a8b5976dd44f340,
     type: 3}
@@ -373,7 +373,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8037077568867710173}
   - component: {fileID: 732957382180310383}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Dungeon@128x128_176
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -431,7 +431,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -2036676549
-  m_SortingLayer: 3
+  m_SortingLayer: 4
   m_SortingOrder: 1
   m_Sprite: {fileID: -8451531585949627746, guid: 68ff880ee26626446a8b5976dd44f340,
     type: 3}
@@ -456,7 +456,7 @@ GameObject:
   - component: {fileID: 3239156725565567110}
   - component: {fileID: 7251538565777324411}
   - component: {fileID: 6686428471491472793}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Dungeon@128x128_159
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -564,7 +564,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8445381244959838851}
   - component: {fileID: 3806244242749382589}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Dungeon@128x128_160
   m_TagString: Untagged
   m_Icon: {fileID: 0}

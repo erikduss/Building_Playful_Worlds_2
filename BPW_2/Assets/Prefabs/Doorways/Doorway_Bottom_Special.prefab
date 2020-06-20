@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1441053081727366365}
   - component: {fileID: 1441053081727366364}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Dungeon@128x128_229
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -92,7 +92,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1441053082056207637}
   - component: {fileID: 1441053082056207636}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Dungeon@128x128_230
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -174,7 +174,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1441053082110315690}
   - component: {fileID: 1441053082110315689}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Dungeon@128x128_214
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -256,7 +256,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1441053082393521513}
   - component: {fileID: 1441053082393521512}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Dungeon@128x128_198
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -337,7 +337,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1441053082444833574}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Doorway_Bottom_Special
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -377,7 +377,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1441053082806631578}
   - component: {fileID: 1441053082806631577}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Dungeon@128x128_200
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -459,7 +459,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1441053082912104414}
   - component: {fileID: 1441053082912104413}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Dungeon@128x128_215
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -541,7 +541,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1441053082957316512}
   - component: {fileID: 1441053082957316191}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Dungeon@128x128_231
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -623,7 +623,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1441053083136675873}
   - component: {fileID: 1441053083136675872}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Dungeon@128x128_213
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -705,7 +705,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1441053083491661208}
   - component: {fileID: 1441053083491661207}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Dungeon@128x128_199
   m_TagString: Untagged
   m_Icon: {fileID: 0}

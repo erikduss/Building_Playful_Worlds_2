@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 848319998405233957}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Normal_Wall_Bottom_V4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -43,7 +43,7 @@ GameObject:
   - component: {fileID: 783468483751424506}
   - component: {fileID: 8445985641233289312}
   - component: {fileID: 3918916523984779699}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Dungeon@128x128_97
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -150,7 +150,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3590277345086630128}
   - component: {fileID: 4316127372488038566}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Dungeon@128x128_115
   m_TagString: Untagged
   m_Icon: {fileID: 0}

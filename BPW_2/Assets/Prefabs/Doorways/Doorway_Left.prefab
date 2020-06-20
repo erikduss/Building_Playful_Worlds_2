@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6490015342799531075}
   - component: {fileID: 7679767694101986351}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Dungeon@128x128_146
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -92,7 +92,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7942094831084060038}
   - component: {fileID: 767891481502577742}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Dungeon@128x128_147
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -175,7 +175,7 @@ GameObject:
   - component: {fileID: 8478578619396797174}
   - component: {fileID: 2238701738553902758}
   - component: {fileID: 5961996265120030871}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Dungeon@128x128_131
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -282,7 +282,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6580324370478318732}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Doorway_Left
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -320,7 +320,7 @@ GameObject:
   - component: {fileID: 6652798922236740255}
   - component: {fileID: 8561275461284188160}
   - component: {fileID: 7475999138667638646}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Dungeon@128x128_162
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -429,7 +429,7 @@ GameObject:
   - component: {fileID: 3912287246205361764}
   - component: {fileID: 3009817409817168231}
   - component: {fileID: 1465271185832653188}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Dungeon@128x128_130
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -538,7 +538,7 @@ GameObject:
   - component: {fileID: 7900926936895580756}
   - component: {fileID: 6570028182269666040}
   - component: {fileID: 5858306823572064866}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Dungeon@128x128_163
   m_TagString: Untagged
   m_Icon: {fileID: 0}
