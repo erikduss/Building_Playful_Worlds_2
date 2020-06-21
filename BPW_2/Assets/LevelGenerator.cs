@@ -1752,7 +1752,7 @@ public class LevelGenerator : MonoBehaviour
                 isenhancedRoom = true;
             }
 
-            if (roomChoice < 5) // 4 chances
+            if (roomChoice < 6) 
             {
                 roomsList[amountOfGeneratedRooms].isTreasureRoom = true;
                 isTreasureRoom = true;
@@ -1794,7 +1794,7 @@ public class LevelGenerator : MonoBehaviour
                     Room_gameobject.name = "Room_" + amountOfGeneratedRooms + "_RESOURCE_ROOM";
                 }
             }
-            else // 3 chances
+            else 
             {
                 // default room
                 Room_gameobject.name = "Room_" + amountOfGeneratedRooms + "_EMPTY_ROOM";

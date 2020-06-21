@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour {
 
@@ -23,6 +25,10 @@ public class PlayerController : MonoBehaviour {
 
     private Vector2 center { get { return collider.bounds.center; } }
 
+    public Text playerHealthText;
+
+    private bool died = false;
+
     // Use this for initialization
     void Start () {
         collider = GetComponent<BoxCollider2D>();
@@ -33,6 +39,10 @@ public class PlayerController : MonoBehaviour {
 
     void Update()
     {
+        if(died)
+        {
+            return;
+        }
         if (Input.GetKeyDown(KeyCode.Space))
         {
             rbPlayer.velocity = new Vector2(0, 0);
@@ -68,7 +78,7 @@ public class PlayerController : MonoBehaviour {
     // Update is called once per frame
     void FixedUpdate ()
     {
-        if (!freezePlayer)
+        if (!freezePlayer && !died)
         {
             MovePlayer();
         }
@@ -154,6 +164,30 @@ public class PlayerController : MonoBehaviour {
     {
         int actualDamage = gameManager.calculateDamageTaken(damage, true);
         health -= actualDamage;
+        playerHealthText.text = "Health: " + health;
+
+        if(health <= 0)
+        {
+            died = true;
+            health = 0;
+            playerHealthText.text = "Health: " + health;
+            playerDied();
+        }
+    }
+
+    void playerDied()
+    {
+        animPlayer.SetFloat("horizontalSpeed", 0);
+        animPlayer.SetFloat("verticalSpeed", 0);
+        animPlayer.SetInteger("Direction", 0);
+        StartCoroutine(deadPlayer());
+    }
+
+    IEnumerator deadPlayer()
+    {
+        animPlayer.Play("dying");
+        yield return new WaitForSeconds(3);
+        SceneManager.LoadScene("MainMenu");
     }
 
     void MovePlayer()
